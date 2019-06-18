@@ -4,7 +4,11 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
+	"fmt"
+	"io"
 	"io/ioutil"
+	"os"
+	"path/filepath"
 	"strings"
 )
 
@@ -120,8 +124,8 @@ func getType(src string) (string, error) {
 	return "", errors.New("Contrib Type not identified")
 }
 
-func copyFiles(src, dest string) {
-	sourceinfo, err := os.Stat(src)
+func copyFiles(src, dest string) error {
+	_, err := os.Stat(src)
 	if err != nil {
 		return err
 	}
@@ -132,18 +136,19 @@ func copyFiles(src, dest string) {
 
 	for _, obj := range objects {
 
-		sourceFile := filepath.Join(src,obj.Name())
+		sourceFile := filepath.Join(src, obj.Name())
 
-		destinationFile := filepath.Join(src,obj.Name())
+		destinationFile := filepath.Join(dest, obj.Name())
 
 		err = copy_file(sourceFile, destinationFile)
 		if err != nil {
 			fmt.Println(err)
 		}
-	
+
 	}
-	return
+	return nil
 }
+
 func copy_file(src string, dest string) (err error) {
 	sourcFile, err := os.Open(src)
 	if err != nil {
@@ -152,7 +157,7 @@ func copy_file(src string, dest string) (err error) {
 
 	defer sourcFile.Close()
 
-	destFile, err := os.Create(dest)
+	destFile, err := os.OpenFile(dest, os.O_RDWR|os.O_CREATE, 0666)
 	if err != nil {
 		return err
 	}
@@ -160,6 +165,7 @@ func copy_file(src string, dest string) (err error) {
 	defer destFile.Close()
 
 	_, err = io.Copy(destFile, sourcFile)
+
 	if err == nil {
 		sourceInfo, err := os.Stat(src)
 		if err != nil {
@@ -168,5 +174,5 @@ func copy_file(src string, dest string) (err error) {
 
 	}
 
-	return
+	return err
 }

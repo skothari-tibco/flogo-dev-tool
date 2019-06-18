@@ -1,8 +1,18 @@
 package flogodevtool
 
 import (
-	
+	"encoding/json"
+	"fmt"
+	"go/parser"
+	"io/ioutil"
+	"os"
+	"path"
+	"path/filepath"
+	"strings"
 
+	"go/token"
+
+	"github.com/project-flogo/core/data"
 	"github.com/spf13/cobra"
 )
 
@@ -30,6 +40,7 @@ var syncMetadata = &cobra.Command{
 
 	},
 }
+
 func init() {
 	descCmd.AddCommand(syncMetadata)
 }

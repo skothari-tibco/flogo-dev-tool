@@ -1,4 +1,4 @@
-package flogdevtool
+package flogodevtool
 
 import (
 	"os"
@@ -25,5 +25,5 @@ func init() {
 
 	GOPATH = os.Getenv("GOPATH")
 
-	COREPATH = filepath.Join(GOPATH, "src", "github.com", "project-flogo", "core", "examples")
+	COREPATH = filepath.Join(GOPATH, "pkg", "mod", "github.com", "project-flogo", "core@v0.9.0", "examples")
 }
