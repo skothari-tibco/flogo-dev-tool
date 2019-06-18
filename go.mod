@@ -1,4 +1,4 @@
-module github.com/skothari-tibco/flogo-dev-tool
+module github.com/skothari-tibco/flogodevtool
 
 go 1.12
 

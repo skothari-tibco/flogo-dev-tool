@@ -1,6 +1,9 @@
-package flogo-dev-tool
+package flogdevtool
 
 import (
+	"os"
+	"path/filepath"
+
 	"github.com/project-flogo/cli/common"
 
 	"github.com/spf13/cobra"
@@ -16,10 +19,11 @@ var descCmd = &cobra.Command{
 }
 var GOPATH string
 var COREPATH string
+
 func init() {
 	common.RegisterPlugin(descCmd)
 
 	GOPATH = os.Getenv("GOPATH")
-	
-	COREPATH = filepath.Join(GOPATH,"src","github.com", "project-flogo","core","examples")
+
+	COREPATH = filepath.Join(GOPATH, "src", "github.com", "project-flogo", "core", "examples")
 }

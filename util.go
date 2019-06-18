@@ -1,4 +1,4 @@
-package flogo-dev-tool
+package flogodevtool
 
 import (
 	"bytes"
