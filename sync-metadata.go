@@ -32,8 +32,9 @@ var syncMetadata = &cobra.Command{
 			fmt.Errorf("Metadata file not present")
 			os.Exit(1)
 		}
+		fmt.Println("here")
 
-		err = createDescriptorJSON(filepath.Join(pwd, "metadta.go"))
+		err = createDescriptorJSON(filepath.Join(pwd, "metadata.go"))
 
 		if err != nil {
 			fmt.Errorf("Error in creating file")
@@ -54,6 +55,7 @@ func createDescriptorJSON(src string) error {
 	srcData, err := ioutil.ReadFile(src)
 
 	if err != nil {
+
 		return err
 	}
 
@@ -61,6 +63,7 @@ func createDescriptorJSON(src string) error {
 	f, err := parser.ParseFile(fset, "", srcData, 0)
 
 	if err != nil {
+
 		return err
 	}
 
@@ -68,7 +71,7 @@ func createDescriptorJSON(src string) error {
 
 	for key, _ := range f.Scope.Objects {
 
-		fieldDetailsMap[key] = getKeyStructs(string(src), key)
+		fieldDetailsMap[key] = getKeyStructs(string(srcData), key)
 
 	}
 
@@ -76,7 +79,11 @@ func createDescriptorJSON(src string) error {
 		contribStruct := ContribStruct{}
 
 		contribStruct.Type, err = getType(pwd)
-		contribStruct.Name = path.Base(pwd) + "-" + contribStruct.Type[6:]
+		fmt.Println("Type...", contribStruct.Type)
+		if err == nil {
+			contribStruct.Name = path.Base(pwd) + "-" + contribStruct.Type[6:]
+		}
+
 		contribStruct.Settings = fieldDetailsMap["Settings"]
 		contribStruct.Input = fieldDetailsMap["Input"]
 		contribStruct.Output = fieldDetailsMap["Output"]
@@ -87,7 +94,10 @@ func createDescriptorJSON(src string) error {
 	} else {
 		operationStruct := OperationStruct{}
 		operationStruct.Type, err = getType(pwd)
-		operationStruct.Name = path.Base(pwd) + "-" + operationStruct.Type[6:]
+		if err == nil {
+			operationStruct.Name = path.Base(pwd) + "-" + operationStruct.Type[6:]
+		}
+
 		operationStruct.Params = fieldDetailsMap["Params"]
 		operationStruct.Input = fieldDetailsMap["Input"]
 		operationStruct.Output = fieldDetailsMap["Output"]
@@ -107,6 +117,7 @@ func createDescriptorJSON(src string) error {
 func getKeyStructs(src string, key string) []*fieldDetails {
 
 	var result []*fieldDetails
+
 	start := strings.Index(src, key+" struct {")
 	offset := start + len(key) + 9
 
