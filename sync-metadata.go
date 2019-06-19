@@ -32,7 +32,6 @@ var syncMetadata = &cobra.Command{
 			fmt.Errorf("Metadata file not present")
 			os.Exit(1)
 		}
-		fmt.Println("here")
 
 		err = createDescriptorJSON(filepath.Join(pwd, "metadata.go"))
 
@@ -79,7 +78,7 @@ func createDescriptorJSON(src string) error {
 		contribStruct := ContribStruct{}
 
 		contribStruct.Type, err = getType(pwd)
-		fmt.Println("Type...", contribStruct.Type)
+
 		if err == nil {
 			contribStruct.Name = path.Base(pwd) + "-" + contribStruct.Type[6:]
 		}
