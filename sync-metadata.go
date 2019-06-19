@@ -24,6 +24,7 @@ var syncMetadata = &cobra.Command{
 		pwd, err := os.Getwd()
 
 		if err != nil {
+			fmt.Errorf("Error in getting  current dir")
 			os.Exit(1)
 		}
 
@@ -35,6 +36,7 @@ var syncMetadata = &cobra.Command{
 		err = createDescriptorJSON(filepath.Join(pwd, "metadta.go"))
 
 		if err != nil {
+			fmt.Errorf("Error in creating file")
 			os.Exit(1)
 		}
 
