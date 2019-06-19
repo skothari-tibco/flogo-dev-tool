@@ -1,7 +1,9 @@
 package flogodevtool
 
 import (
+	"fmt"
 	"os"
+	"os/exec"
 	"path/filepath"
 
 	"github.com/project-flogo/cli/common"
@@ -25,5 +27,10 @@ func init() {
 
 	GOPATH = os.Getenv("GOPATH")
 
+	err := exec.Command("go", "get", "github.com/project-flogo/core@v0.9.0").Run()
+	if err != nil {
+		fmt.Println("Error determinig version of core")
+		os.Exit(1)
+	}
 	COREPATH = filepath.Join(GOPATH, "pkg", "mod", "github.com", "project-flogo", "core@v0.9.0", "examples")
 }
